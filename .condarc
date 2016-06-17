@@ -1,0 +1,6 @@
+channels:
+- defaults
+always_yes: true
+show_channel_urls: true
+track_features:
+- nomkl
