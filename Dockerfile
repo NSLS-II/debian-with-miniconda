@@ -60,11 +60,3 @@ RUN cd && \
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
-
-# Add the condarc that allows us to skip adding "--yes" to all the conda calls
-# Also has the `nomkl` directive which significantly shortens the download times
-# and always shows where the packages are downloaded from
-ADD .condarc /conda/.condarc
-
-# Set the CONDARC env var which will tell conda to use this specific condarc
-ENV CONDARC /conda/.condarc
