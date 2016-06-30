@@ -52,33 +52,19 @@ ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
 ENV LC_ALL C.UTF-8
 
-# Create the `builder` user
-RUN useradd --create-home --shell /bin/bash builder
-
-# Set the `builder` user as the active user so all ENV/RUN/ADD commands get run
-# as the `builder` user
-USER builder
-
-# Add the conda binary folder to the builder's path
-ENV PATH /home/builder/conda/bin:$PATH
+# Add the conda binary folder to the path
+ENV PATH /conda/bin:$PATH
 
 # Actually install miniconda
 RUN cd && \
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/conda && \
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
-
-USER root
-
-# Make /tmp writable by everyone
-RUN chown 1777 /tmp
 
 # Add the condarc that allows us to skip adding "--yes" to all the conda calls
 # Also has the `nomkl` directive which significantly shortens the download times
 # and always shows where the packages are downloaded from
-ADD .condarc /home/builder/.condarc
+ADD .condarc /conda/.condarc
 
-# Need to make sure builder owns these files
-RUN chown -R builder:builder /home/builder
-
-USER builder
+# Set the CONDARC env var which will tell conda to use this specific condarc
+ENV CONDARC /conda/.condarc
