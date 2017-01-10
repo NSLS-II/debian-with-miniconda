@@ -21,6 +21,7 @@ RUN apt-get update && \
       libxext6 libxext-dev \
       libxrender1 libxrender-dev \
       libsm6 libsm-dev \
+      libsmbclient-dev \
       tk-dev \
       libx11-6 libx11-dev \
       # gobject-introspection
