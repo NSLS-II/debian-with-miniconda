@@ -62,3 +62,4 @@ RUN cd && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
     conda install conda=4.2.12
+    conda install conda-build=2.0.12
