@@ -61,5 +61,6 @@ RUN cd && \
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
-    conda install conda=4.3.22 -y
-    conda install conda-build=2.0.12 -y
+
+RUN conda install conda=4.3.22 -y 
+RUN conda install conda-build=2.0.12 -y
