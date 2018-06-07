@@ -80,3 +80,4 @@ RUN conda info
 RUN cat $CONDARC_PATH
 RUN conda install python=3.6 -y
 RUN conda install conda conda-build anaconda-client conda-execute conda-env networkx slacker
+RUN conda execute https://raw.githubusercontent.com/NSLS-II/lightsource2-recipes/master/scripts/build.py -h
