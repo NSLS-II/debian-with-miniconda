@@ -1,6 +1,6 @@
 FROM debian:7.9
 
-MAINTAINER Eric Dill <edill@bnl.gov>
+MAINTAINER Maksim Rakitin <mrakitin@bnl.gov>
 
 RUN apt-get update && \
     apt-get install -y  \
@@ -61,3 +61,22 @@ RUN cd && \
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
+
+ENV CONDARC_PATH /root/.condarc
+ENV CONDARC $CONDARC_PATH
+ENV PYTHONUNBUFFERED 1
+
+RUN echo "binstar_upload: false\n\
+always_yes: true\n\
+show_channel_urls: true\n\
+channels:\n\
+- lightsource2-tag\n\
+- anaconda\n\
+- conda-forge" > $CONDARC_PATH
+
+# And set the correct environmental variable that lets us use it
+
+RUN conda info
+RUN cat $CONDARC_PATH
+RUN conda install python=3.6 -y
+RUN conda install conda conda-build anaconda-client conda-execute conda-env
