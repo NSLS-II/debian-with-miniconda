@@ -79,4 +79,4 @@ channels:\n\
 RUN conda info
 RUN cat $CONDARC_PATH
 RUN conda install python=3.6 -y
-RUN conda install conda conda-build anaconda-client conda-execute conda-env
+RUN conda install conda conda-build anaconda-client conda-execute conda-env networkx slacker
