@@ -7,9 +7,10 @@ timestamp="$(date +%Y%m%d%H%M%S)"
 logfile="build_${timestamp}.log"
 
 # Main building process
-docker image build . --no-cache \
-                     -t $DOCKER_ID_USER/debian-with-miniconda:latest \
-                     -t $DOCKER_ID_USER/debian-with-miniconda:${timestamp} > $logfile 2>&1
+docker image build --no-cache \
+                   -t $DOCKER_ID_USER/debian-with-miniconda:latest \
+                   -t $DOCKER_ID_USER/debian-with-miniconda:${timestamp} \
+                   . > $logfile 2>&1
 
 # Check if the image was built successfully. Example of last 3 lines:
 #  ---> 895eb9854400
@@ -21,24 +22,21 @@ out=$(tail -3 $logfile | grep -i 'Successfully built') || exit 1
 
 # Get Image ID and check if it exists in the `docker image` output
 image_id=$(echo $out | awk '{print $3}')
-echo "Generated image ID: ${image_id}"
-# echo -e  "\nDocker images before tagging:"
-echo -e  "\nDocker images:"
-docker images | grep ${image_id}
+echo "Generated image ID: ${image_id}" >> $logfile 2>&1
+echo -e  "\nDocker images:"            >> $logfile 2>&1
+docker images | grep ${image_id}       >> $logfile 2>&1
 
 # Tag the docker image
 # docker tag ${image_id} $DOCKER_ID_USER/debian-with-miniconda:latest
 # docker tag ${image_id} $DOCKER_ID_USER/debian-with-miniconda:${timestamp}
 
-# echo -e  "\nDocker images after tagging:"
-# docker images | grep ${image_id}
-
 # Push the built images (requires running "docker login" before)
-docker push $DOCKER_ID_USER/debian-with-miniconda
+docker push $DOCKER_ID_USER/debian-with-miniconda:latest       >> $logfile 2>&1
+docker push $DOCKER_ID_USER/debian-with-miniconda:${timestamp} >> $logfile 2>&1
 
 # Remove timestamped tag, so that next time it's built, the existing tags are
 # not pushed to https://hub.docker.com
-docker rmi $DOCKER_ID_USER/debian-with-miniconda:${timestamp}
+docker rmi $DOCKER_ID_USER/debian-with-miniconda:${timestamp} >> $logfile 2>&1
 # Remove previous latest tag, which appears as <none>
-docker rmi $(docker images $DOCKER_ID_USER/debian-with-miniconda --filter "dangling=true" -q --no-trunc)
+docker rmi $(docker images $DOCKER_ID_USER/debian-with-miniconda --filter "dangling=true" -q --no-trunc) >> $logfile 2>&1
 
