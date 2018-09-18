@@ -73,8 +73,7 @@ always_yes: true\n\
 show_channel_urls: true\n\
 channels:\n\
 - lightsource2-tag\n\
-- anaconda\n\
-- conda-forge" > $CONDARC_PATH
+- anaconda" > $CONDARC_PATH
 
 # And set the correct environmental variable that lets us use it
 
