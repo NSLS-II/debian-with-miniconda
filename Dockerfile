@@ -57,9 +57,11 @@ ENV LC_ALL C.UTF-8
 ENV PATH /conda/bin:$PATH
 
 # Actually install miniconda
+# Miniconda 4.5.11 already has Python 3.7 as a default interpreter, so
+# we use version 4.5.4 which still uses Python 3.6
 RUN cd && \
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
+    wget https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_64.sh --no-verbose && \
+    bash Miniconda3-4.5.4-Linux-x86_64.sh -b -p /conda && \
     rm Miniconda*.sh
 
 ENV CONDARC_PATH /root/.condarc
@@ -77,7 +79,12 @@ channels:\n\
 # And set the correct environmental variable that lets us use it
 
 RUN conda info
+RUN conda config --show-sources
+RUN conda list --show-channel-urls
 RUN cat $CONDARC_PATH
 RUN conda install python=3.6 -y
 RUN conda install conda conda-build anaconda-client conda-execute conda-env networkx slacker
 RUN conda execute https://raw.githubusercontent.com/NSLS-II/lightsource2-recipes/master/scripts/build.py -h
+RUN conda info
+RUN conda config --show-sources
+RUN conda list --show-channel-urls
