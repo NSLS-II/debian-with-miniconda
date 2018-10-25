@@ -55,9 +55,9 @@ ENV LC_ALL C.UTF-8
 
 # Dot files:
 RUN cd && git clone https://github.com/mrakitin/dotfiles && \
-    cp dotfiles/bashrc /root/.bashrc && \
-    cp dotfiles/vimrc /root/.vimrc && \
-    rm -rf dotfiles/bashrc
+    cp -v dotfiles/bashrc /root/.bashrc && \
+    cp -v dotfiles/vimrc /root/.vimrc && \
+    rm -rfv dotfiles/
 
 # Add the conda binary folder to the path
 ENV PATH /conda/bin:$PATH
