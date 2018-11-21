@@ -57,7 +57,10 @@ ENV LC_ALL C.UTF-8
 RUN cd && git clone https://github.com/mrakitin/dotfiles && \
     cp -v dotfiles/bashrc /root/.bashrc && \
     cp -v dotfiles/vimrc /root/.vimrc && \
+    cp -v dotfiles/bash_history /root/.bash_history && \
     rm -rfv dotfiles/
+
+ENV HISTFILE=/root/.bash_history
 
 # Add the conda binary folder to the path
 ENV PATH /conda/bin:$PATH
