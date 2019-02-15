@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Check if the required DOCKER_ID_USER is set up in the env vars
-env | grep 'DOCKER_ID_USER=' || (echo 'ERROR: "DOCKER_ID_USER" must be set up in your env' && exit 1)
+# env | grep 'DOCKER_ID_USER=' || (echo 'ERROR: "DOCKER_ID_USER" must be set up in your env' && exit 1)
+DOCKER_ID_USER=nsls2
 image_name='debian-with-miniconda'
 
 timestamp="$(date +%Y%m%d%H%M%S)"
@@ -28,8 +29,8 @@ echo -e  "\nDocker images:"            >> $logfile 2>&1
 docker images | grep ${image_id}       >> $logfile 2>&1
 
 # Push the built images (requires running "docker login" before)
-docker push $DOCKER_ID_USER/${image_name}:latest       >> $logfile 2>&1
-docker push $DOCKER_ID_USER/${image_name}:${timestamp} >> $logfile 2>&1
+docker push $DOCKER_ID_USER/${image_name}:latest       >> $logfile 2>&1 || exit 1
+docker push $DOCKER_ID_USER/${image_name}:${timestamp} >> $logfile 2>&1 || exit 1
 
 # Remove timestamped tag, so that next time it's built, the existing tags are
 # not pushed to https://hub.docker.com
