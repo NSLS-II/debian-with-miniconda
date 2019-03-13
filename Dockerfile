@@ -60,6 +60,9 @@ RUN cd && git clone https://github.com/mrakitin/dotfiles && \
     cp -v dotfiles/bash_history /root/.bash_history && \
     rm -rfv dotfiles/
 
+# bash-git-prompt:
+RUN git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+
 ENV HISTFILE=/root/.bash_history
 
 # Add the conda binary folder to the path
