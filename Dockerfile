@@ -35,7 +35,9 @@ RUN apt-get update && \
       # need an editor...
       vim \
       # and one for tom...
-      emacs
+      emacs \
+      # X11 support for some graphical packages
+      xvfb
 
 # Set the Locale so conda doesn't freak out
 # It is roughly this problem: http://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
