@@ -53,15 +53,15 @@ ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
 ENV LC_ALL C.UTF-8
 
+# bash-git-prompt:
+RUN git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+
 # Dot files:
 RUN cd && git clone https://github.com/mrakitin/dotfiles && \
     cp -v dotfiles/bashrc /root/.bashrc && \
     cp -v dotfiles/vimrc /root/.vimrc && \
     cp -v dotfiles/bash_history /root/.bash_history && \
     rm -rfv dotfiles/
-
-# bash-git-prompt:
-RUN git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
 
 ENV HISTFILE=/root/.bash_history
 
