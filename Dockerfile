@@ -39,7 +39,7 @@ RUN apt-get update && \
       # X11 support for some graphical packages
       xvfb \
       # killall and friends
-      psmisc
+      psmisc procps htop
 
 # Set the Locale so conda doesn't freak out
 # It is roughly this problem: http://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
