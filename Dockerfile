@@ -37,7 +37,9 @@ RUN apt-get update && \
       # and one for tom...
       emacs \
       # X11 support for some graphical packages
-      xvfb
+      xvfb \
+      # killall and friends
+      psmisc
 
 # Set the Locale so conda doesn't freak out
 # It is roughly this problem: http://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
