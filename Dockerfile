@@ -13,7 +13,8 @@ RUN apt-get update && \
       make \
       patch \
       tar \
-      wget \
+      # downloaders
+      wget curl \
       zlib1g-dev \
       sed \
       libreadline6-dev \
