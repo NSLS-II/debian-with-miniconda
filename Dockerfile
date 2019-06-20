@@ -90,7 +90,7 @@ RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
 RUN cat $CONDARC_PATH
-RUN conda install python=3.7 -y
+RUN conda install python=3.7 ipython
 RUN conda install conda conda-build anaconda-client conda-env conda-verify networkx slacker
 RUN conda info
 RUN conda config --show-sources
