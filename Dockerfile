@@ -65,15 +65,15 @@ ENV LANGUAGE C.UTF-8
 ENV LC_ALL C.UTF-8
 
 # Add the conda binary folder to the path
-ENV PATH /conda/bin:$PATH
+ENV PATH /opt/conda/bin:$PATH
 
 # Actually install miniconda
 RUN cd && \
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p /conda && \
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
     rm Miniconda*.sh
 
-ENV CONDARC_PATH /root/.condarc
+ENV CONDARC_PATH /opt/conda/.condarc
 ENV CONDARC $CONDARC_PATH
 ENV PYTHONUNBUFFERED 1
 
