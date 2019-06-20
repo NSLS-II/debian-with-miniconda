@@ -2,6 +2,11 @@ FROM debian:7.9
 
 MAINTAINER Maksim Rakitin <mrakitin@bnl.gov>
 
+RUN echo "deb http://archive.debian.org/debian wheezy main\n\
+deb-src http://archive.debian.org/debian wheezy main\n\
+deb http://archive.debian.org/debian wheezy-backports main\n\
+deb-src http://archive.debian.org/debian wheezy-backports main" > /etc/apt/sources.list
+
 RUN apt-get update && \
     apt-get install -y  \
       autoconf \
