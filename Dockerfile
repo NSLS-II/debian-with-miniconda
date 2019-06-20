@@ -92,9 +92,8 @@ RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
 RUN cat $CONDARC_PATH
-RUN conda install python=3.6 -y
-RUN conda install conda=4.5 conda-build anaconda-client conda-execute conda-env conda-verify networkx slacker
-RUN conda execute https://raw.githubusercontent.com/NSLS-II/lightsource2-recipes/master/scripts/build.py -h
+RUN conda install python=3.7 -y
+RUN conda install conda conda-build anaconda-client conda-env conda-verify networkx slacker
 RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
