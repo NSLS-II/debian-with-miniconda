@@ -96,17 +96,24 @@ RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
 
+# create a user, since we don't want to run as root
+ENV USER=builder
+RUN useradd -m $USER
+ENV HOME=/home/$USER
+WORKDIR $HOME
+USER $USER
+RUN cp -v $CONDARC_PATH $HOME
 
 ## Convenience for interactive debugging:
 
 # bash-git-prompt:
-RUN git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+RUN git clone https://github.com/magicmonty/bash-git-prompt.git $HOME/.bash-git-prompt --depth=1
 
 # Dot files:
 RUN cd && git clone https://github.com/mrakitin/dotfiles && \
-    cp -v dotfiles/bashrc /root/.bashrc && \
-    cp -v dotfiles/vimrc /root/.vimrc && \
-    cp -v dotfiles/bash_history /root/.bash_history && \
+    cp -v dotfiles/bashrc $HOME/.bashrc && \
+    cp -v dotfiles/vimrc $HOME/.vimrc && \
+    cp -v dotfiles/bash_history $HOME/.bash_history && \
     rm -rfv dotfiles/
 
-ENV HISTFILE=/root/.bash_history
+ENV HISTFILE=$HOME/.bash_history
