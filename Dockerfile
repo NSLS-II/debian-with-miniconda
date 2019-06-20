@@ -9,6 +9,7 @@ deb-src http://archive.debian.org/debian wheezy-backports main" > /etc/apt/sourc
 
 RUN apt-get update && \
     apt-get install -y  \
+      alien \
       autoconf \
       build-essential \
       bzip2 \
