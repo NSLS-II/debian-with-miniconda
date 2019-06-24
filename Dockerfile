@@ -116,4 +116,6 @@ RUN cd && git clone https://github.com/mrakitin/dotfiles && \
     cp -v dotfiles/bash_history $HOME/.bash_history && \
     rm -rfv dotfiles/
 
+RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> $HOME/.bashrc
+
 ENV HISTFILE=$HOME/.bash_history
