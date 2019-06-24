@@ -2,8 +2,14 @@ FROM debian:7.9
 
 MAINTAINER Maksim Rakitin <mrakitin@bnl.gov>
 
+RUN echo "deb http://archive.debian.org/debian wheezy main\n\
+deb-src http://archive.debian.org/debian wheezy main\n\
+deb http://archive.debian.org/debian wheezy-backports main\n\
+deb-src http://archive.debian.org/debian wheezy-backports main" > /etc/apt/sources.list
+
 RUN apt-get update && \
     apt-get install -y  \
+      alien \
       autoconf \
       build-essential \
       bzip2 \
@@ -58,30 +64,16 @@ ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
 ENV LC_ALL C.UTF-8
 
-# bash-git-prompt:
-RUN git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
-
-# Dot files:
-RUN cd && git clone https://github.com/mrakitin/dotfiles && \
-    cp -v dotfiles/bashrc /root/.bashrc && \
-    cp -v dotfiles/vimrc /root/.vimrc && \
-    cp -v dotfiles/bash_history /root/.bash_history && \
-    rm -rfv dotfiles/
-
-ENV HISTFILE=/root/.bash_history
-
 # Add the conda binary folder to the path
-ENV PATH /conda/bin:$PATH
+ENV PATH /opt/conda/bin:$PATH
 
 # Actually install miniconda
-# Miniconda 4.5.11 already has Python 3.7 as a default interpreter, so
-# we use version 4.5.4 which still uses Python 3.6
 RUN cd && \
-    wget https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_64.sh --no-verbose && \
-    bash Miniconda3-4.5.4-Linux-x86_64.sh -b -p /conda && \
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-verbose && \
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
     rm Miniconda*.sh
 
-ENV CONDARC_PATH /root/.condarc
+ENV CONDARC_PATH /opt/conda/.condarc
 ENV CONDARC $CONDARC_PATH
 ENV PYTHONUNBUFFERED 1
 
@@ -98,9 +90,32 @@ RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
 RUN cat $CONDARC_PATH
-RUN conda install python=3.6 -y
-RUN conda install conda=4.5 conda-build anaconda-client conda-execute conda-env conda-verify networkx slacker
-RUN conda execute https://raw.githubusercontent.com/NSLS-II/lightsource2-recipes/master/scripts/build.py -h
+RUN conda install python=3.7 ipython
+RUN conda install conda conda-build anaconda-client conda-env conda-verify networkx slacker
 RUN conda info
 RUN conda config --show-sources
 RUN conda list --show-channel-urls
+
+# create a user, since we don't want to run as root
+ENV USER=builder
+RUN useradd -m $USER
+ENV HOME=/home/$USER
+WORKDIR $HOME
+USER $USER
+RUN cp -v $CONDARC_PATH $HOME
+
+## Convenience for interactive debugging:
+
+# bash-git-prompt:
+RUN git clone https://github.com/magicmonty/bash-git-prompt.git $HOME/.bash-git-prompt --depth=1
+
+# Dot files:
+RUN cd && git clone https://github.com/mrakitin/dotfiles && \
+    cp -v dotfiles/bashrc $HOME/.bashrc && \
+    cp -v dotfiles/vimrc $HOME/.vimrc && \
+    cp -v dotfiles/bash_history $HOME/.bash_history && \
+    rm -rfv dotfiles/
+
+RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> $HOME/.bashrc
+
+ENV HISTFILE=$HOME/.bash_history
