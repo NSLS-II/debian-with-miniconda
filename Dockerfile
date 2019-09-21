@@ -31,6 +31,8 @@ RUN apt-get update && \
       libsmbclient-dev \
       tk-dev \
       libx11-6 libx11-dev \
+      # needed by xrt (see https://github.com/NSLS-II/lightsource2-recipes/pull/676):
+      libegl1-mesa \
       # gobject-introspection
       flex \
       # install extra packages for gobject-introspection package
