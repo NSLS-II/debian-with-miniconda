@@ -100,9 +100,10 @@ RUN conda list --show-channel-urls
 
 # create a user, since we don't want to run as root
 ENV USER=builder
-RUN useradd -m $USER
+RUN useradd -ms /bin/bash $USER
 ENV HOME=/home/$USER
 WORKDIR $HOME
+RUN chown -Rv $USER: /opt/conda/
 USER $USER
 RUN cp -v $CONDARC_PATH $HOME
 
